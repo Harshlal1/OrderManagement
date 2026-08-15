@@ -1,21 +1,20 @@
 package HarshLal.Controller;
 
-
-import com.sun.net.httpserver.HttpHandler;
-import com.sun.net.httpserver.HttpExchange;
-
 import java.io.IOException;
 
-public class UserHandler implements HttpHandler  {
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
 
+public class OrderHandler implements HttpHandler{
 	
-	  @Override
+	 @Override
 	    public void handle(HttpExchange exchange) throws IOException {
-	        String response = "Hello! Harsh";
+	        String response = "order Handler";
 
 	        exchange.sendResponseHeaders(200, response.length());
 
 	        exchange.getResponseBody().write(response.getBytes());
 	        exchange.getResponseBody().close();
 	    }
+
 }
