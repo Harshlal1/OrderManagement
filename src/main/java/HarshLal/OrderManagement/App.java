@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import com.sun.net.httpserver.HttpServer;
 
+import HarshLal.Controller.OrderHandler;
+import HarshLal.Controller.ProductHandler;
 import HarshLal.Controller.UserHandler;
 
 /**
@@ -19,6 +21,8 @@ public class App
     		);
 
     		server.createContext("/users", new UserHandler());
+    		server.createContext("/orders", new OrderHandler());
+    		server.createContext("/products", new ProductHandler());
 
     		server.start();
         System.out.println( "Server Started" );
