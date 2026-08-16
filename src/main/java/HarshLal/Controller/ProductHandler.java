@@ -3,9 +3,14 @@ package HarshLal.Controller;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+
+import org.json.JSONObject;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+
+import HarshLal.Repository.JdbcConnection;
 
 public class ProductHandler implements HttpHandler{
 	 @Override
@@ -64,7 +69,10 @@ public class ProductHandler implements HttpHandler{
 			
 			System.out.println(requestBody);
 			
+			processPostRequest(requestBody);
+			
 			 String response = "Product Handler";
+			 
 
 		        exchange.sendResponseHeaders(200, response.length());
 
@@ -162,11 +170,51 @@ public class ProductHandler implements HttpHandler{
 /*-----------------------------------------------------------------------------------
  * 
  * 
- * To progess the Request and Generate Responses
+ * To process the Request and Generate Responses
  * 
  * 
  * -----------------------------------------------------------------------------------
  */	 
- 
+       public String processPostRequest(String requestBody) {  // to create/add data 
+    	   System.out.println("Inside processPostRequest");
+    	   String response="";
+    	   String name="";
+    	   int id;
+    	   int quantity;
+    	   float price;
+    	   try {
+    	   JSONObject jsonObject=new JSONObject(requestBody);
+    	   
+    	   JSONObject data=jsonObject.getJSONObject("data");
+    	   
+    	   name=data.getString("name");
+    	   id=data.getInt("id");
+    	   quantity=data.getInt("quantity");
+    	   price=data.getFloat("price");
+    	   
+    	   
+    	   
+    	   ArrayList<String> value=new ArrayList();
+    	   
+    	   
+    	   value.add(String.valueOf(id)); //1
+    	   value.add(name);				  //2
+    	   value.add(String.valueOf(price)); //3
+    	   value.add(String.valueOf(quantity)); //4
+    	  
+    	   
+    	   System.out.println("before dbResponse");
+    	   
+    	   JdbcConnection jd=new JdbcConnection();
+    	  String dbResponse =jd.setData(value);
+    	  System.out.println("after dbResponse");
+    	  
+    	  
+    	   }catch(Exception e) {
+    		   e.printStackTrace();
+    	   }
+    	   
+    	   return response;
+       }
 
 }
