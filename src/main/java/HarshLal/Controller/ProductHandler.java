@@ -206,7 +206,7 @@ public class ProductHandler implements HttpHandler{
     	   System.out.println("before dbResponse");
     	   
     	   JdbcConnection jd=new JdbcConnection();
-    	  String dbResponse =jd.setData(value);
+    	  String dbResponse =jd.setDataProduct(value);
     	  System.out.println("after dbResponse");
     	  
     	  
