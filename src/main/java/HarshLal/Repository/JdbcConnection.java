@@ -11,6 +11,7 @@ public class JdbcConnection {
     public static String setDataProduct(ArrayList data) {
     	System.out.println("Inside setData");
     		String Query="INSERT INTO \"PRODUCT_TABLE\" VALUES (?, ?, ?, ?)";
+    		int rows =0;
        
         try {
         	Connection con=DbConfig.getConnection();
@@ -23,7 +24,7 @@ public class JdbcConnection {
         	
         	System.out.println("ST: "+st.toString());
         	
-        	int rows = st.executeUpdate();
+        	 rows = st.executeUpdate();
         	
         	
         	System.out.println("rows: "+rows);
@@ -35,13 +36,13 @@ public class JdbcConnection {
 			e.printStackTrace();
 		}
         
-        return "";
+        return String.valueOf(rows);
     }
     
     public static String setDataOrder(ArrayList data) {
     	System.out.println("Inside setData");
     		String Query="INSERT INTO \"ORDER_TABLE\" VALUES (?, ?, ?, ?,?)";
-       
+    		int rows =0;
         try {
         	Timestamp timestamp =
         		    Timestamp.valueOf((String) data.get(3));
@@ -58,7 +59,7 @@ public class JdbcConnection {
         	
         	System.out.println("ST: "+st.toString());
         	
-        	int rows = st.executeUpdate();
+        	 rows = st.executeUpdate();
         	
         	
         	System.out.println("rows: "+rows);
@@ -70,12 +71,13 @@ public class JdbcConnection {
 			e.printStackTrace();
 		}
         
-        return "";
+        return String.valueOf(rows);
     }
     
     public static String setDataUser(ArrayList data) {
     	System.out.println("Inside setData");
     		String Query="INSERT INTO \"USER_TABLE\" VALUES (?, ?, ?, ?,?,?,?,?,?,?,?)";
+    		int rows =0;
        
         try {
         	Connection con=DbConfig.getConnection();
@@ -110,7 +112,7 @@ public class JdbcConnection {
         	
         	System.out.println("ST: "+st.toString());
         	
-        	int rows = st.executeUpdate();
+        	 rows = st.executeUpdate();
         	
         	
         	System.out.println("rows: "+rows);
@@ -122,6 +124,40 @@ public class JdbcConnection {
 			e.printStackTrace();
 		}
         
-        return "";
+        return String.valueOf(rows);
+    }
+    
+    
+    
+   /*-------------------------------------------------------------------------------------
+    * 
+    * 
+    *                                          TO get Data From DB
+    * 
+    * ------------------------------------------------------------------------------------ 
+    */
+    public static String getDataUser(String ID) {
+    	
+    	String Query="select * from \"USER_TABLE\" where \"ID\"=?";
+    	
+    	try {
+    		Connection con=DbConfig.getConnection();
+
+        	PreparedStatement st=con.prepareStatement(Query);
+        	st.setInt(1, Integer.parseInt((String) ID));
+        	
+        	System.out.println("ST: "+st.toString());
+        	 ResultSet rs=st.executeQuery();
+        	 rs.next();
+        	 System.out.println("rs :"+rs.toString());
+        	 
+        	 System.out.println("Name : "+rs.getString("name"));
+        	// System.out.println("Name : "+rs.getInt(2));
+        	
+    	} catch (Exception e) {
+		
+		e.printStackTrace();
+	}
+    	return"";
     }
 }

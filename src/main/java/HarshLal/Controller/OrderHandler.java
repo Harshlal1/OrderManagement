@@ -66,9 +66,8 @@ public class OrderHandler implements HttpHandler{
 			
 			System.out.println(requestBody);
 			
-			processPostRequest(requestBody);
 			
-			 String response = "order Handler";
+			 String response =processPostRequest(requestBody);
 
 		        exchange.sendResponseHeaders(200, response.length());
 
@@ -210,6 +209,18 @@ public class OrderHandler implements HttpHandler{
     	   JdbcConnection jd=new JdbcConnection();
     	  String dbResponse =jd.setDataOrder(value);
     	  System.out.println("after dbResponse");
+    	  
+    	  JSONObject resp=new JSONObject();
+    	  if(dbResponse.equalsIgnoreCase("1")) {
+    		  resp.put("request_type", "addProduct");
+    		  resp.put("status", "success");
+    		  resp.put("respMessage", "Data Inserted Successfully");
+    	  }else {
+    		  resp.put("request_type", "addProduct");
+    		  resp.put("status", "Failed");
+    		  resp.put("respMessage", "Data Insertion Failed");
+    	  }
+    	  response=resp.toString();
     	  
     	  
     	   }catch(Exception e) {

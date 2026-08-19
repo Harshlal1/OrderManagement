@@ -29,7 +29,7 @@ public class UserHandler implements HttpHandler  {
 				 
 			 }else  if(method.equalsIgnoreCase("GET")) {
 				 
-				 PostMethod(exchange);
+				 GetMethod(exchange);
 				 
 			 }else  if(method.equalsIgnoreCase("PUT")) {
 				 
@@ -72,9 +72,8 @@ public class UserHandler implements HttpHandler  {
 	  			
 	  			System.out.println(requestBody);
 
-	  			processPostRequest(requestBody);
 	  			
-	  			 String response = "User Handler";
+	  			 String response =processPostRequest(requestBody);
 
 	  		        exchange.sendResponseHeaders(200, response.length());
 
@@ -101,6 +100,8 @@ public class UserHandler implements HttpHandler  {
 	  			requestBody = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8); //to read request
 	  			
 	  			System.out.println(requestBody);
+	  			
+	  			processGetRequest(requestBody);
 	  			
 	  			 String response = "User Handler";
 
@@ -238,6 +239,18 @@ public class UserHandler implements HttpHandler  {
 			  	    	  String dbResponse =jd.setDataUser(value);
 			  	    	  System.out.println("after dbResponse");
 			  	    	  
+			  	    	 JSONObject resp=new JSONObject();
+			  	    	 if(dbResponse.equalsIgnoreCase("1")) {
+			  	    		  resp.put("request_type", "addProduct");
+			  	    		  resp.put("status", "success");
+			  	    		  resp.put("respMessage", "Data Inserted Successfully");
+			  	    	  }else {
+			  	    		  resp.put("request_type", "addProduct");
+			  	    		  resp.put("status", "Failed");
+			  	    		  resp.put("respMessage", "Data Insertion Failed");
+			  	    	  }
+			  	    	  response=resp.toString();
+			  	    	  
 	  	    	  
 	  	    	   }catch(Exception e) {
 	  	    		   e.printStackTrace();
@@ -245,6 +258,30 @@ public class UserHandler implements HttpHandler  {
 	  	    	   
 	  	    	   return response;
 	  	       }
+	  	       
+	  	       
+	  	       
+	  public String processGetRequest(String requestBody) {
+	  	   
+		  String response="";
+		  String id="";
+		  try {
+ 	    	   JSONObject jsonObject=new JSONObject(requestBody);
+ 	    	   
+ 	    	   JSONObject data=jsonObject.getJSONObject("data");
+ 	    	   
+ 	    	  id=String.valueOf(data.getInt("user_id"));
+ 	    	  
+ 	    	 JdbcConnection jd=new JdbcConnection();
+ 	    	 jd.getDataUser(id);
+ 	    	   
+ 	    	   
+		  }catch(Exception e) {
+	    		   e.printStackTrace();
+	    	   }
+	  	    	 
+	  	    	 return response;
+	}
 
 	    
 }

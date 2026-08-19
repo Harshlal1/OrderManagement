@@ -69,9 +69,9 @@ public class ProductHandler implements HttpHandler{
 			
 			System.out.println(requestBody);
 			
-			processPostRequest(requestBody);
 			
-			 String response = "Product Handler";
+			
+			 String response = processPostRequest(requestBody);
 			 
 
 		        exchange.sendResponseHeaders(200, response.length());
@@ -209,6 +209,18 @@ public class ProductHandler implements HttpHandler{
     	  String dbResponse =jd.setDataProduct(value);
     	  System.out.println("after dbResponse");
     	  
+    	  JSONObject resp=new JSONObject();
+    	  
+    	  if(dbResponse.equalsIgnoreCase("1")) {
+    		  resp.put("request_type", "addProduct");
+    		  resp.put("status", "success");
+    		  resp.put("respMessage", "Data Inserted Successfully");
+    	  }else {
+    		  resp.put("request_type", "addProduct");
+    		  resp.put("status", "Failed");
+    		  resp.put("respMessage", "Data Insertion Failed");
+    	  }
+    	  response=resp.toString();
     	  
     	   }catch(Exception e) {
     		   e.printStackTrace();
